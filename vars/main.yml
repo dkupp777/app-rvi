@@ -1,0 +1,7 @@
+---
+appname: ivr-test
+listenport: 19522
+shutdownport: 19533
+xms: 512
+xmx: 768
+wshost: https://dev-services.risk.regn.net/VPSService

@@ -1,0 +1,14 @@
+######## {{ appname }}  ################
+$ModLoad imfile
+$InputFileName /vc/{{ appname }}/current/logs/catalina.out
+$InputFileTag IVRtomcate:
+$InputFileStateFile IVR
+$InputFileSeverity debug
+$InputRunFileMonitor
+
+$ModLoad imfile
+$InputFileName /vc/{{ appname }}/current/logs/composer.log
+$InputFileTag IVRcomposer:
+$InputFileStateFile IVR2
+$InputFileSeverity debug
+$InputRunFileMonitor

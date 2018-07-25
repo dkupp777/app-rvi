@@ -1,0 +1,59 @@
+---
+- name: ensure vps group
+  group:
+    name: vps
+    gid: 2000
+    state: present
+- name: ensure vps user
+  user: 
+    name: vps
+    group: vps
+    uid: 2000
+- name: copy ivr directory to target
+  synchronize:
+    src: /media/packages/vc-apps/ivr/
+    dest: /vc/{{ appname }}
+- name: copy etc directory to target
+  synchronize:
+    src: /media/packages/vc-apps/etc
+    dest: /vc/etc-test
+- name: copy server.xml template
+  template: 
+    src: server.xml.j2
+    dest: /vc/{{ appname }}/current/conf/server.xml
+- name: copy setenv.sh configuration file
+  template:
+    src: setenv.sh.j2
+    dest: /vc/{{ appname }}/current/bin/setenv.sh
+- name: set vps directory ownership
+  file: 
+    dest=/vc/{{ appname }}
+    owner=2000
+    group=2000
+    mode=0755
+    recurse=yes
+- name: copy setenv.sh configuration template
+  template:
+    src: ivr-start.sh.j2
+    dest: /etc/rc.d/init.d/{{ appname }}
+- name: configure permissions on {{ appname }} start script
+  file: 
+    dest=/etc/rc.d/init.d/{{ appname }}
+    mode=0755
+- name: configure {{ appname }} service to autostart
+  service:
+    name: "{{ appname }}"
+    enabled: yes
+  notify:
+  - ivr6
+  - ivr7
+- name: copy ivr logrotate configuraton template
+  template: 
+    src: logrotate.ivr.j2
+    dest: /etc/logrotate.d/{{ appname }}
+- name: copy ivr rsyslog configuration template
+  template: 
+    src: rsyslog.ivr.conf.j2
+    dest: /etc/rsyslog.d/{{ appname }}.conf
+  notify:
+  - rsyslog

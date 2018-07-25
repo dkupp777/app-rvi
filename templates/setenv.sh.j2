@@ -1,0 +1,3 @@
+#!/bin/bash
+JAVA_HOME="/opt/java/current"
+JAVA_OPTS="-Djava.library.path=/usr/local/lib/ -Dcom.sun.xml.bind.v2.bytecode.ClassTailor.noOptimize=true -Xms{{ xms }}m -Xmx{{ xmx }}m -Dwshost={{ wshost }} -DintegrationWS=/IntegrationService"
